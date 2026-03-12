@@ -1,16 +1,125 @@
-# React + Vite
+# 📸 Gallery App (MERN + Cloudinary)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack **image gallery application** where users can upload, view, and delete images.
+Images are stored in the cloud and associated with individual user accounts.
 
-Currently, two official plugins are available:
+This project demonstrates a **production-style MERN architecture** with cloud storage and deployment.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🚀 Live Demo
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Frontend: https://your-vercel-link.vercel.app
+Backend API: https://gallery-backend-sgma.onrender.com
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🧠 Features
+
+* 🔐 User Authentication (Register / Login)
+* 🖼 Upload images to cloud storage
+* 📂 Personal gallery for each user
+* 🗑 Delete images (removes from database + cloud)
+* 📱 Mobile-friendly UI
+* 🔍 Fullscreen image viewer
+* 👆 Long-press delete interaction
+* 👈👉 Swipe navigation between images
+
+---
+
+## 🏗 Tech Stack
+
+### Frontend
+
+* React
+* React Router
+* Tailwind CSS
+* Vite
+
+### Backend
+
+* Node.js
+* Express.js
+* JWT Authentication
+* Multer (file handling)
+
+### Database
+
+* MongoDB Atlas
+
+### Cloud Storage
+
+* Cloudinary
+
+### Deployment
+
+* Frontend → Vercel
+* Backend → Render
+
+---
+
+## 📁 Project Architecture
+
+Frontend → Vercel
+Backend → Render
+Images → Cloudinary
+Database → MongoDB Atlas
+
+Flow:
+
+User Upload → React → Express API → Cloudinary → MongoDB → Gallery Display
+
+---
+
+## 📦 Installation
+
+Clone the repository:
+
+```
+git clone https://github.com/mudassardevr/gallery-frontend.git
+```
+
+Install dependencies:
+
+```
+npm install
+```
+
+Run development server:
+
+```
+npm run dev
+```
+
+---
+
+## 🔑 Environment Variables
+
+Create a `.env` file:
+
+```
+VITE_API_URL=https://gallery-backend-sgma.onrender.com
+```
+
+---
+
+## 📸 Screenshots
+
+(Add screenshots of your gallery UI here)
+
+---
+
+## ✨ Future Improvements
+
+* Masonry / Pinterest style gallery layout
+* Infinite scrolling
+* Drag & drop image upload
+* Image lazy loading
+* User profile page
+
+---
+
+## 👨‍💻 Author
+
+Mudassar khan
+BCA Student | MERN Stack Developer
