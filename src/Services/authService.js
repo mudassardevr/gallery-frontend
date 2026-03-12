@@ -35,7 +35,14 @@ export const forgotPasswordAPI = async (email) => {
     },
     body: JSON.stringify({ email }),
   });
-  return response.json();
+
+  const text = await response.text();
+  // return response.json();
+   try {
+    return JSON.parse(text);
+  } catch {
+    return { success: false, error: text };
+  }
 };
 
 //VERIFY-OTP
