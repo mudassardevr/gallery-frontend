@@ -12,9 +12,9 @@ import VerifyOTP from './components/pages/VerifyOTP'
 import ResetPassword from './components/pages/ResetPassword'
 
 
-
 import MainLayout from './components/layouts/MainLayout'
 import ProtectedRoute from './components/routes/ProtectedRoute'
+import PublicRoute from './components/routes/PublicRoute'
 
 
 
@@ -36,11 +36,11 @@ function App() {
 
 
     {/* Auth Pages */}
-    <Route path='/login' element={<Login/>}/>
-    <Route path='/register' element={<Register/>} />
-    <Route path='/forgot-password' element={<ForgotPassword/>} />
-    <Route path='/verify-otp' element={<VerifyOTP/>} />
-    <Route path='/reset-password' element={<ResetPassword/>} />
+    <Route path='/login' element={<PublicRoute><Login/></PublicRoute>}/>
+    <Route path='/register' element={<PublicRoute><Register/></PublicRoute>} />
+    <Route path='/forgot-password' element={<PublicRoute><ForgotPassword/></PublicRoute>} />
+    <Route path='/verify-otp' element={<PublicRoute><VerifyOTP/></PublicRoute>} />
+    <Route path='/reset-password' element={<PublicRoute><ResetPassword/></PublicRoute>} />
 
 
 
