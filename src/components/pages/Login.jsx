@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate, useNavigation } from "react-router-dom";
-import pinterestLogo from "../../assets/pinterest-logo.svg";
+import mLogo from "../../assets/M-logo.svg";
 import googleLogo from "../../assets/google.svg";
 import QRlogo from "../../assets/qr.svg";
 import eyeIcon from "../../assets/eye.svg";
@@ -67,7 +67,7 @@ function Login() {
             {/* login */}
             <div className="flex justify-center items-center mb-4">
               <div className="w-10 h-10 rounded-3xl flex justify-center items-center">
-                <img src={pinterestLogo} alt="pinterest" />
+                <img src={mLogo} alt="pinterest" />
               </div>
             </div>
 
