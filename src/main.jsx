@@ -10,11 +10,11 @@ import { LoadingProvider } from "./context/LoadingContext.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      <AuthProvider>
-        <LoadingProvider>
+      <LoadingProvider>
+        <AuthProvider>
           <App />
-        </LoadingProvider>
-      </AuthProvider>
+        </AuthProvider>
+      </LoadingProvider>
     </BrowserRouter>
   </StrictMode>,
 );
