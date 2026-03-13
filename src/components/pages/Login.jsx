@@ -1,14 +1,16 @@
 import React, { useContext, useState } from "react";
-import { Link, useNavigate, useNavigation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import mLogo from "../../assets/M-logo.svg";
 import googleLogo from "../../assets/google.svg";
 import QRlogo from "../../assets/qr.svg";
 import eyeIcon from "../../assets/eye.svg";
 import { loginAPI } from "../../Services/authService";
 import { AuthContext } from "../../context/AuthContext"
+import { LoadingContext } from "../../context/LoadingContext";
 
 function Login() {
   const {setIsLoggedIn} = useContext(AuthContext);///useContext
+  const { setLoading } = useContext(LoadingContext)
 
   const navigate = useNavigate();
 
@@ -25,6 +27,7 @@ function Login() {
   };
 
   const handleLogin = async () => {
+    setLoading(true) // loading start
     const data = await loginAPI(credentials);
 
     if (data.success) {
@@ -34,6 +37,8 @@ function Login() {
     } else {
       alert(data.error);
     }
+
+    setLoading(false)
   };
 
   const handleSubmit = (e) => {
@@ -115,6 +120,7 @@ function Login() {
               </Link>
 
               <button
+              type="button"
                 onClick={handleLogin}
                 className="w-full bg-[#e60023] p-2 rounded-xl text-white hover:bg-[#b60101] duration-400"
               >
