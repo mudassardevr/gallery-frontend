@@ -29,6 +29,7 @@ function Login() {
   const handleLogin = async () => {
     setLoading(true) // loading start
     const data = await loginAPI(credentials);
+    console.log("LOGIN RESPONSE:", data);
 
     if (data.success) {
       localStorage.setItem("token", data.token);
