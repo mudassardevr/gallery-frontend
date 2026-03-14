@@ -37,7 +37,7 @@ function Register() {
     const data = await registerAPI(credentials);
 
     if(data.success){
-      localStorage.setItem("token" , data.token);
+      localStorage.getItem("token" , data.token);
       setIsLoggedIn(true);
       navigate("/")
     } else{
