@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useState , useContext } from "react";
 import pinterestLogo from "../../assets/pinterest-logo.svg";
 import googleLogo from "../../assets/google.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { registerAPI } from "../../Services/authService";
+import { AuthContext } from "../../context/AuthContext";
+
 
 function Register() {
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
+
+  const { setIsLoggedIn } = useContext(AuthContext)
 
   const [credentials, setCredentials] = useState({
     name: "",
@@ -34,6 +38,7 @@ function Register() {
 
     if(data.success){
       localStorage.setItem("token" , data.token);
+      setIsLoggedIn(true);
       navigate("/")
     } else{
       alert(data.error)
@@ -171,6 +176,7 @@ function Register() {
               <p className="mt-5 text-[14px] text-gray-700">
                 Already a member?{" "}
                 <Link
+                to="/login"
                   className="font-semibold text-black hover:underline"
                 >
                   Log in
