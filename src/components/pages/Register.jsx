@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import pinterestLogo from "../../assets/pinterest-logo.svg";
+import mLogo from "../../assets/M-logo.svg";
 import googleLogo from "../../assets/google.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { registerAPI } from "../../Services/authService";
@@ -80,7 +80,7 @@ function Register() {
           {/* Register card */}
           <div className="bg-white w-full p-8 max-w-sm rounded-2xl">
             <div className="flex justify-center items-center mb-5">
-              <img src={pinterestLogo} alt="pinterest" className="w-10 h-10" />
+              <img src={mLogo} alt="logo" className="w-10 h-10" />
             </div>
 
             <div className="text-center text-3xl font-bold mb-5">
