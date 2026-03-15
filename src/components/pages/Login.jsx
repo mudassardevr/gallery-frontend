@@ -132,7 +132,6 @@ function Login() {
                 className="w-full bg-[#e60023] p-2 rounded-xl text-white hover:bg-[#b60101] duration-400"
               >
                 {loading ? "logging in.." : "Log in"}
-                Log In
               </button>
 
               <div className="text-center font-bold">OR</div>

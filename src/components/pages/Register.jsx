@@ -193,7 +193,6 @@ function Register() {
                   className="font-semibold text-black hover:underline"
                 >
                    {loading ? "Creating account..." : "Sign up"}
-                  Log in
                 </Link>
               </p>
             </div>
