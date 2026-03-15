@@ -27,7 +27,11 @@ function Login() {
   };
 
   const handleLogin = async () => {
+
     setLoading(true) // loading start
+    try {
+      
+   
     const data = await loginAPI(credentials);
     console.log("LOGIN RESPONSE:", data);
 
@@ -38,8 +42,16 @@ function Login() {
     } else {
       alert(data.error);
     }
+     } catch (error) {
+       console.error(error);
+    alert("Server error");
+      
+    } finally{
+      setLoading(false)
 
-    setLoading(false)
+    }
+
+    
   };
 
   const handleSubmit = (e) => {

@@ -1,16 +1,18 @@
-import React, { useState , useContext } from "react";
+import React, { useState, useContext } from "react";
 import pinterestLogo from "../../assets/pinterest-logo.svg";
 import googleLogo from "../../assets/google.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { registerAPI } from "../../Services/authService";
 import { AuthContext } from "../../context/AuthContext";
-
+import { LoadingContext } from "../../context/LoadingContext";
 
 function Register() {
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
 
-  const { setIsLoggedIn } = useContext(AuthContext)
+  const { setIsLoggedIn } = useContext(AuthContext);
+  const { setLoading } = useContext(LoadingContext)
+
 
   const [credentials, setCredentials] = useState({
     name: "",
@@ -21,30 +23,34 @@ function Register() {
 
   const handleOnChange = (e) => {
     setCredentials({
-      ...credentials ,
-      [e.target.name] : e.target.value
-    })
+      ...credentials,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-  }
-
-  const handleRegister = async() => {
-
-    if(credentials.password !== credentials.confirmPassword){
+  const handleRegister = async () => {
+    if (credentials.password !== credentials.confirmPassword) {
       return alert("password do not match");
     }
+    setLoading(true);//loading start
+    try {
 
-
-    const data = await registerAPI(credentials);
-
-    if(data.success){
-      localStorage.setItem("token" , data.token);
-      setIsLoggedIn(true);
-      navigate("/")
-    } else{
-      alert(data.error)
+      const data = await registerAPI(credentials);
+  
+      if (data.success) {
+        localStorage.setItem("token", data.token);
+        setIsLoggedIn(true);
+        navigate("/");
+      } else {
+        alert(data.error);
+      }
+    } catch (error) {
+      console.error("Register Error:", error);
+      alert("Server error");
+    } finally{
+      setLoading(false); //loading end
     }
-  }
-
+  };
 
   return (
     <>
@@ -147,9 +153,11 @@ function Register() {
                 <p className="text-sm text-center my-4">
                   Use 8 or more letters, numbers and symbols
                 </p>
-              
 
-                <button onClick={handleRegister} className="mt-4 w-full bg-[#e60023] p-2 rounded-xl text-white hover:bg-[#b60101] duration-400">
+                <button
+                  onClick={handleRegister}
+                  className="mt-4 w-full bg-[#e60023] p-2 rounded-xl text-white hover:bg-[#b60101] duration-400"
+                >
                   Sign up
                 </button>
               </div>
@@ -176,7 +184,7 @@ function Register() {
               <p className="mt-5 text-[14px] text-gray-700">
                 Already a member?{" "}
                 <Link
-                to="/login"
+                  to="/login"
                   className="font-semibold text-black hover:underline"
                 >
                   Log in
