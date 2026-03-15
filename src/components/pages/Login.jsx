@@ -8,10 +8,12 @@ import { loginAPI } from "../../Services/authService";
 import { AuthContext } from "../../context/AuthContext";
 import { LoadingContext } from "../../context/LoadingContext";
 import { toast } from "react-toastify";
+import { Eye , EyeOff} from "lucide-react"
 
 function Login() {
   const { setIsLoggedIn } = useContext(AuthContext); ///useContext
   const { loading, setLoading } = useContext(LoadingContext);
+  const [ showPassword , setShowPassword ] = useState(false);
 
   const navigate = useNavigate();
 
@@ -105,15 +107,18 @@ function Login() {
                 <label className="text-black p-2">Password</label>
                 <div className="relative">
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     name="password"
                     placeholder="Password"
                     value={credentials.password}
                     onChange={handleOnChange}
                     className="w-full border border-gray-500 text-xl rounded-2xl p-3 mt-1 focus:outline-blue-700"
                   />
-                  <span className="absolute right-3 top-5 text-gray-500">
-                    <img src={eyeIcon} className="w-5 h-5" />
+                  <span 
+                  onClick={()=> setShowPassword(!showPassword)}
+                  className="absolute right-3 top-5 text-gray-500">
+                    {/* <img src={eyeIcon} className="w-5 h-5" /> */}
+                    {showPassword ? <EyeOff size={20}/> : <Eye size={20}/>}
                   </span>
                 </div>
               </div>
