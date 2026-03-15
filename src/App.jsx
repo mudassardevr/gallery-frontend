@@ -4,6 +4,8 @@ import { useContext } from 'react'
 
 import { LoadingContext } from './context/LoadingContext'
 import Loader from './components/common/Loader'
+import { ToastContainer } from "react-toastify"
+import "react-toastify/ReactToastify.css"
 
 import Login from './components/pages/Login'
 import Register from './components/pages/Register'
@@ -55,6 +57,8 @@ function App() {
 
 
     </Routes>
+
+    <ToastContainer position="top-center" />
 
   
     </>

@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { registerAPI } from "../../Services/authService";
 import { AuthContext } from "../../context/AuthContext";
 import { LoadingContext } from "../../context/LoadingContext";
+import { toast } from "react-toastify";
+
 
 function Register() {
   const [step, setStep] = useState(1);
@@ -41,12 +43,13 @@ function Register() {
         localStorage.setItem("token", data.token);
         setIsLoggedIn(true);
         navigate("/");
+        toast.success("Registration Successful")//toast
       } else {
-        alert(data.error);
+        toast.error(data.error);
       }
     } catch (error) {
       console.error("Register Error:", error);
-      alert("Server error");
+      toast.error("Server Error");
     } finally{
       setLoading(false); //loading end
     }

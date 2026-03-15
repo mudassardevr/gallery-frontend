@@ -5,12 +5,13 @@ import googleLogo from "../../assets/google.svg";
 import QRlogo from "../../assets/qr.svg";
 import eyeIcon from "../../assets/eye.svg";
 import { loginAPI } from "../../Services/authService";
-import { AuthContext } from "../../context/AuthContext"
+import { AuthContext } from "../../context/AuthContext";
 import { LoadingContext } from "../../context/LoadingContext";
+import { toast } from "react-toastify";
 
 function Login() {
-  const {setIsLoggedIn} = useContext(AuthContext);///useContext
-  const { setLoading } = useContext(LoadingContext)
+  const { setIsLoggedIn } = useContext(AuthContext); ///useContext
+  const { setLoading } = useContext(LoadingContext);
 
   const navigate = useNavigate();
 
@@ -27,31 +28,23 @@ function Login() {
   };
 
   const handleLogin = async () => {
-
-    setLoading(true) // loading start
+    setLoading(true); // loading start
     try {
-      
-   
-    const data = await loginAPI(credentials);
-    console.log("LOGIN RESPONSE:", data);
-
-    if (data.success) {
-      localStorage.setItem("token", data.token);
-      setIsLoggedIn(true)
-      navigate("/");
-    } else {
-      alert(data.error);
+      const data = await loginAPI(credentials);
+      if (data.success) {
+        localStorage.setItem("token", data.token);
+        setIsLoggedIn(true);
+        navigate("/");
+        toast.success("Login Successful");//toast
+      } else {
+        toast.error(data.error);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Server Error");
+    } finally {
+      setLoading(false);
     }
-     } catch (error) {
-       console.error(error);
-    alert("Server error");
-      
-    } finally{
-      setLoading(false)
-
-    }
-
-    
   };
 
   const handleSubmit = (e) => {
@@ -133,7 +126,7 @@ function Login() {
               </Link>
 
               <button
-              type="button"
+                type="button"
                 onClick={handleLogin}
                 className="w-full bg-[#e60023] p-2 rounded-xl text-white hover:bg-[#b60101] duration-400"
               >
