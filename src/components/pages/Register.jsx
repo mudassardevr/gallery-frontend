@@ -158,10 +158,12 @@ function Register() {
                 </p>
 
                 <button
+                  type="button"
                   onClick={handleRegister}
+                  disabled={loading}
                   className="mt-4 w-full bg-[#e60023] p-2 rounded-xl text-white hover:bg-[#b60101] duration-400"
                 >
-                  Sign up
+                 {loading ? "Creating Account.." : "Sign up" }
                 </button>
               </div>
             )}
@@ -187,12 +189,10 @@ function Register() {
               <p className="mt-5 text-[14px] text-gray-700">
                 Already a member?{" "}
                 <Link
-                type="button"
                   to="/login"
-                  disabled={loading}
                   className="font-semibold text-black hover:underline"
                 >
-                   {loading ? "Creating account..." : "Sign up"}
+                  Log in 
                 </Link>
               </p>
             </div>
