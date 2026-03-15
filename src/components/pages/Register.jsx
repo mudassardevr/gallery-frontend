@@ -184,6 +184,7 @@ function Register() {
               <p className="mt-5 text-[14px] text-gray-700">
                 Already a member?{" "}
                 <Link
+                type="button"
                   to="/login"
                   className="font-semibold text-black hover:underline"
                 >
