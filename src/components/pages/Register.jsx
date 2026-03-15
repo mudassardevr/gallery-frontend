@@ -13,7 +13,7 @@ function Register() {
   const navigate = useNavigate();
 
   const { setIsLoggedIn } = useContext(AuthContext);
-  const { setLoading } = useContext(LoadingContext)
+  const { loading ,setLoading } = useContext(LoadingContext)
 
 
   const [credentials, setCredentials] = useState({
@@ -32,7 +32,7 @@ function Register() {
 
   const handleRegister = async () => {
     if (credentials.password !== credentials.confirmPassword) {
-      return alert("password do not match");
+      return toast.error("password do not match");
     }
     setLoading(true);//loading start
     try {
@@ -42,8 +42,8 @@ function Register() {
       if (data.success) {
         localStorage.setItem("token", data.token);
         setIsLoggedIn(true);
-        navigate("/");
         toast.success("Registration Successful")//toast
+        navigate("/");
       } else {
         toast.error(data.error);
       }
@@ -189,8 +189,10 @@ function Register() {
                 <Link
                 type="button"
                   to="/login"
+                  disabled={loading}
                   className="font-semibold text-black hover:underline"
                 >
+                   {loading ? "Creating account..." : "Sign up"}
                   Log in
                 </Link>
               </p>

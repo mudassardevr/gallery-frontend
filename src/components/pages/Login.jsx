@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 
 function Login() {
   const { setIsLoggedIn } = useContext(AuthContext); ///useContext
-  const { setLoading } = useContext(LoadingContext);
+  const { loading, setLoading } = useContext(LoadingContext);
 
   const navigate = useNavigate();
 
@@ -34,8 +34,8 @@ function Login() {
       if (data.success) {
         localStorage.setItem("token", data.token);
         setIsLoggedIn(true);
-        navigate("/");
         toast.success("Login Successful");//toast
+        navigate("/");
       } else {
         toast.error(data.error);
       }
@@ -128,8 +128,10 @@ function Login() {
               <button
                 type="button"
                 onClick={handleLogin}
+                 disabled={loading}
                 className="w-full bg-[#e60023] p-2 rounded-xl text-white hover:bg-[#b60101] duration-400"
               >
+                {loading ? "logging in.." : "Log in"}
                 Log In
               </button>
 
