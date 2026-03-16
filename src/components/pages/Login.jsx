@@ -54,7 +54,7 @@ function Login() {
 
   const handleGoogleLogin = () => {
   window.location.href =
-    "https://your-backend-name.onrender.com/api/auth/google";
+    "https://gallery-backend-sgma.onrender.com/api/auth/google";
 };
 
   return (
