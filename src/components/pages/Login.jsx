@@ -52,6 +52,11 @@ function Login() {
     e.preventDefault();
   };
 
+  const handleGoogleLogin = () => {
+  window.location.href =
+    "https://your-backend-name.onrender.com/api/auth/google";
+};
+
   return (
     <>
       <div className="relative min-h-screen">
@@ -142,7 +147,7 @@ function Login() {
 
               {/* Social-buttons */}
 
-              <button className="w-full border border-gray-300 p-2 rounded-sm flex items-center justify-center gap-4  hover:bg-gray-200 duration-400">
+              <button onClick={handleGoogleLogin} className="w-full border border-gray-300 p-2 rounded-sm flex items-center justify-center gap-4  hover:bg-gray-200 duration-400">
                 <img
                   src={googleLogo}
                   alt="google-logo"

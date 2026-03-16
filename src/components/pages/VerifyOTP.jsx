@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext , useEffect } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { forgotPasswordAPI, verifyOtpAPI } from "../../Services/authService";
 import { toast } from "react-toastify";
@@ -10,7 +10,7 @@ function VerifyOTP() {
   const { loading, setLoading } = useContext(LoadingContext);
 
   const email = location.state?.email;
-useEffect(() => {
+  useEffect(() => {
     if (!email) {
       navigate("/forgot-password");
     }
@@ -113,17 +113,15 @@ useEffect(() => {
 
         {/* RESEND OTP */}
         <p className="text-sm text-gray-500 mt-4">
-        Didn't receive the code?{" "}
-        <span
-          onClick={handleResendOtp}
-          className="text-blue-600 cursor-pointer hover:underline"
-        >
-          Resend OTP
-        </span>
-      </p>
+          Didn't receive the code?{" "}
+          <span
+            onClick={handleResendOtp}
+            className="text-blue-600 cursor-pointer hover:underline"
+          >
+            Resend OTP
+          </span>
+        </p>
       </div>
-
-      
     </div>
   );
 }
