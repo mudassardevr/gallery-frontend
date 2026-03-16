@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState , useContext} from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { resetPasswordAPI } from "../../Services/authService";
+import { LoadingContext } from "../../context/LoadingContext";
+import { toast } from "react-toastify";
+
 
 function ResetPassword() {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const { setLoading } = useContext(LoadingContext)
 
   const email = location.state?.email;
 
@@ -16,20 +20,28 @@ function ResetPassword() {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
 
+    setLoading(true)
+    try {
     const data = await resetPasswordAPI(email, password);
 
     if (data.success) {
 
-      alert("Password reset successful");
+      toast.success("Password reset successful");
 
       navigate("/login");
 
     } else {
-      alert(data.error);
+      toast.error(data.error);
+    }
+
+     } catch (error) {
+      toast.error("Server Error");
+    } finally{
+      setLoading(false)
     }
   };
 
