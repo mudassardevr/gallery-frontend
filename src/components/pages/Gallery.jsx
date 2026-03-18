@@ -8,12 +8,15 @@ import {
   deleteImageAPI,
 } from "../../Services/imageService";
 import ImageCard from "../common/ImageCard";
+import { toast } from "react-toastify";
+
 
 function Gallery() {
   // const location = useLocation();
   const [image, setImage] = useState([]);
   const [file, setFile] = useState(null);
   const [viewerIndex, setViewerIndex] = useState(null); // touch image on fullscreen
+  const [ uploading , setUploading ] = useState(false);
 
   const { activeId, setActiveId, handleDeleteImage, refresh } =
     useOutletContext(); // THIS IS FOR LONG PRESS DELETE
@@ -40,9 +43,16 @@ function Gallery() {
   const handleOnChange = async (e) => {
     const seletedFile = e.target.files[0];
     if (!seletedFile) return;
-
+    
+    setUploading(true);
+    try {
     await uploadImageAPI(seletedFile);
     fetchImages();
+    } catch (error) {
+      toast.error(error);
+    } finally {
+      setUploading(false);
+    }
   };
 
   // Delete image / hold to show delete icon
@@ -163,7 +173,10 @@ function Gallery() {
           htmlFor="fileInput"
           className="bg-[#e60023] text-3xl text-white flex justify-center items-center w-10 h-10 rounded-full fixed bottom-24 right-6 shadow-2xl active:scale-95"
         >
-          <img src={plusIcon} className="w-4 h-4" />
+          {uploading ? ( 
+            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+          ) : (
+          <img src={plusIcon} className="w-4 h-4" />)}
         </label>
       </div>
     </>
