@@ -10,13 +10,13 @@ import {
 import ImageCard from "../common/ImageCard";
 import { toast } from "react-toastify";
 
-
 function Gallery() {
   // const location = useLocation();
   const [image, setImage] = useState([]);
   const [file, setFile] = useState(null);
   const [viewerIndex, setViewerIndex] = useState(null); // touch image on fullscreen
-  const [ uploading , setUploading ] = useState(false);
+  const [uploading, setUploading] = useState(false); // plus button loading when image adding
+  const [deletingId, setDeletingId] = useState(null);
 
   const { activeId, setActiveId, handleDeleteImage, refresh } =
     useOutletContext(); // THIS IS FOR LONG PRESS DELETE
@@ -41,15 +41,15 @@ function Gallery() {
   };
 
   const handleOnChange = async (e) => {
-    const seletedFile = e.target.files[0];
-    if (!seletedFile) return;
-    
+    const selectedFile = e.target.files[0];
+    if (!selectedFile) return;
+
     setUploading(true);
     try {
-    await uploadImageAPI(seletedFile);
-    fetchImages();
+      await uploadImageAPI(selectedFile);
+      await fetchImages();
     } catch (error) {
-      toast.error(error);
+      toast.error("Adding Failed");
     } finally {
       setUploading(false);
     }
@@ -67,10 +67,7 @@ function Gallery() {
   };
 
   // touch image fullscreen
-  const viewerImage =
-    viewerIndex !== null
-      ? image[viewerIndex].imageUrl
-      : null;
+  const viewerImage = viewerIndex !== null ? image[viewerIndex].imageUrl : null;
 
   // Swipt image left/Right
   const touchStartX = useRef(null);
@@ -101,6 +98,25 @@ function Gallery() {
     // }
   };
 
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm("Are you sure you want to Delete ? ");
+
+    if (!confirmDelete) return;
+
+    try {
+      setDeletingId(id);
+
+      await deleteImageAPI(id);
+      await fetchImages();
+      toast.success("Image deleted");
+    } catch (error) {
+      toast.error("Delete failed");
+    } finally {
+      setDeletingId(null);
+      setActiveId(null); // hide delete button after action
+    }
+  };
+
   return (
     <>
       <div onClick={() => setActiveId(null)}>
@@ -117,7 +133,10 @@ function Gallery() {
               {image.map((img, index) => (
                 <div
                   key={img._id}
-                  className="relative group"
+                  // className="relative group"
+                  className={`relative group transition duration-300 ${
+                    deletingId === img._id ? "opacity-0 scale-95" : ""
+                  }`}
                   onTouchStart={() => handleTouchStart(img._id)}
                   onTouchEnd={handleTouchEnd}
                   onMouseDown={() => handleTouchStart(img._id)}
@@ -131,12 +150,16 @@ function Gallery() {
                   />
                   {activeId === img._id && (
                     <button
-                      onClick={() => handleDeleteImage(img._id)}
-                      className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded transition"
+                      onClick={() => handleDelete(img._id)}
+                      disabled={deletingId === img._id}
+                      className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded transition-all duration-300 ease-in-out"
                     >
-                      Delete
+                      {deletingId === img._id ? (
+                        <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      ) : (
+                        "Delete"
+                      )}
                     </button>
-                    
                   )}
                 </div>
               ))}
@@ -170,18 +193,18 @@ function Gallery() {
 
         {/* pluse button */}
         <label
-          htmlFor="fileInput"
+          htmlFor={!uploading ? "fileInput" : ""}
           className="bg-[#e60023] text-3xl text-white flex justify-center items-center w-10 h-10 rounded-full fixed bottom-24 right-6 shadow-2xl active:scale-95"
         >
-          {uploading ? ( 
+          {uploading ? (
             <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
           ) : (
-          <img src={plusIcon} className="w-4 h-4" />)}
+            <img src={plusIcon} className="w-4 h-4" />
+          )}
         </label>
       </div>
     </>
   );
-  
 }
 
 export default Gallery;
