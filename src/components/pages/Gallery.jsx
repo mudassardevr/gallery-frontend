@@ -9,6 +9,7 @@ import {
 } from "../../Services/imageService";
 import ImageCard from "../common/ImageCard";
 import { toast } from "react-toastify";
+import DeleteModal from "../common/DeleteModal";
 
 function Gallery() {
   // const location = useLocation();
@@ -17,6 +18,8 @@ function Gallery() {
   const [viewerIndex, setViewerIndex] = useState(null); // touch image on fullscreen
   const [uploading, setUploading] = useState(false); // plus button loading when image adding
   const [deletingId, setDeletingId] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
 
   const { activeId, setActiveId, handleDeleteImage, refresh } =
     useOutletContext(); // THIS IS FOR LONG PRESS DELETE
@@ -98,28 +101,26 @@ function Gallery() {
     // }
   };
 
-  const handleDelete = async (id) => {
-    const confirmDelete = window.confirm("Are you sure you want to Delete ? ");
-
-    if (!confirmDelete) return;
-
+  const handleDelete = async () => {
     try {
-      setDeletingId(id);
+      setDeletingId(selectedId);
 
-      await deleteImageAPI(id);
+      await deleteImageAPI(selectedId);
       await fetchImages();
       toast.success("Image deleted");
     } catch (error) {
       toast.error("Delete failed");
     } finally {
       setDeletingId(null);
+      setShowModal(false);
       setActiveId(null); // hide delete button after action
     }
   };
 
   return (
     <>
-      <div onClick={() => setActiveId(null)}>
+      <div onClick={() =>  !showModal && setActiveId(null)}
+         className={showModal ? "blur-sm pointer-events-none" : ""}>
         {/* Cards */}
         <div className="p-2">
           {image.length === 0 ? (
@@ -150,7 +151,10 @@ function Gallery() {
                   />
                   {activeId === img._id && (
                     <button
-                      onClick={() => handleDelete(img._id)}
+                      onClick={() => {
+                        setSelectedId(img._id);
+                        setShowModal(true);
+                      }}
                       disabled={deletingId === img._id}
                       className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded transition-all duration-300 ease-in-out"
                     >
@@ -203,6 +207,12 @@ function Gallery() {
           )}
         </label>
       </div>
+    {/* // deleting modal */}
+      <DeleteModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onConfirm={handleDelete}
+      />
     </>
   );
 }
