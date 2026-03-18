@@ -4,7 +4,7 @@ const DeleteModal = ({ isOpen, onClose, onConfirm }) => {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       
-      <div className="bg-white rounded-xl p-5 w-[300px] shadow-xl animate-scaleIn">
+      <div className="bg-white rounded-xl p-5 w-75 shadow-xl animate-scaleIn">
         
         <h2 className="text-lg font-semibold mb-2 text-gray-800">
           Delete Image

@@ -17,20 +17,21 @@ function Gallery() {
   const [file, setFile] = useState(null);
   const [viewerIndex, setViewerIndex] = useState(null); // touch image on fullscreen
   const [uploading, setUploading] = useState(false); // plus button loading when image adding
-  const [deletingId, setDeletingId] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-  const [selectedId, setSelectedId] = useState(null);
+  // const [deletingId, setDeletingId] = useState(null);
+  // const [showModal, setShowModal] = useState(false);
+  // const [selectedId, setSelectedId] = useState(null);
 
-  const { activeId, setActiveId, handleDeleteImage, refresh } =
+  const { activeId, setActiveId, handleDeleteClick , refresh } =
     useOutletContext(); // THIS IS FOR LONG PRESS DELETE
   let pressTimer = useRef(null);
 
+    // ✅ fetch images
   const fetchImages = async () => {
     try {
       const data = await fetchImagesAPI();
       setImage(data);
     } catch (error) {
-      console.error(error);
+      toast.error(error);
     }
   };
 
@@ -43,6 +44,7 @@ function Gallery() {
     fetchImages();
   };
 
+  // ✅ upload image
   const handleOnChange = async (e) => {
     const selectedFile = e.target.files[0];
     if (!selectedFile) return;
@@ -101,26 +103,25 @@ function Gallery() {
     // }
   };
 
-  const handleDelete = async () => {
-    try {
-      setDeletingId(selectedId);
+  // const handleDelete = async () => {
+  //   try {
+  //     setDeletingId(selectedId);
 
-      await deleteImageAPI(selectedId);
-      await fetchImages();
-      toast.success("Image deleted");
-    } catch (error) {
-      toast.error("Delete failed");
-    } finally {
-      setDeletingId(null);
-      setShowModal(false);
-      setActiveId(null); // hide delete button after action
-    }
-  };
+  //     await deleteImageAPI(selectedId);
+  //     await fetchImages();
+  //     toast.success("Image deleted");
+  //   } catch (error) {
+  //     toast.error("Delete failed");
+  //   } finally {
+  //     setDeletingId(null);
+  //     setShowModal(false);
+  //     setActiveId(null); // hide delete button after action
+  //   }
+  // };
 
   return (
     <>
-      <div onClick={() =>  !showModal && setActiveId(null)}
-         className={showModal ? "blur-sm pointer-events-none" : ""}>
+      <div onClick={() =>  setActiveId(null)}> 
         {/* Cards */}
         <div className="p-2">
           {image.length === 0 ? (
@@ -134,10 +135,10 @@ function Gallery() {
               {image.map((img, index) => (
                 <div
                   key={img._id}
-                  // className="relative group"
-                  className={`relative group transition duration-300 ${
-                    deletingId === img._id ? "opacity-0 scale-95" : ""
-                  }`}
+                  className="relative group transition-all duration-300"
+                  // className={`relative group transition duration-300 ${
+                  //   deletingId === img._id ? "opacity-0 scale-95" : ""
+                  // }`}
                   onTouchStart={() => handleTouchStart(img._id)}
                   onTouchEnd={handleTouchEnd}
                   onMouseDown={() => handleTouchStart(img._id)}
@@ -151,18 +152,16 @@ function Gallery() {
                   />
                   {activeId === img._id && (
                     <button
-                      onClick={() => {
-                        setSelectedId(img._id);
-                        setShowModal(true);
-                      }}
-                      disabled={deletingId === img._id}
+                      onClick={() => handleDeleteClick(img._id)}
+                      // disabled={deletingId === img._id}
                       className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded transition-all duration-300 ease-in-out"
                     >
-                      {deletingId === img._id ? (
+                      {/* {deletingId === img._id ? (
                         <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                       ) : (
                         "Delete"
-                      )}
+                      )} */}
+                      Delete
                     </button>
                   )}
                 </div>
@@ -207,12 +206,12 @@ function Gallery() {
           )}
         </label>
       </div>
-    {/* // deleting modal */}
+    {/* // deleting modal
       <DeleteModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
         onConfirm={handleDelete}
-      />
+      /> */}
     </>
   );
 }
