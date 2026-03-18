@@ -7,6 +7,7 @@ import {
   fetchImagesAPI,
   deleteImageAPI,
 } from "../../Services/imageService";
+import ImageCard from "../common/ImageCard";
 
 function Gallery() {
   // const location = useLocation();
@@ -113,11 +114,10 @@ function Gallery() {
                   onMouseUp={handleTouchEnd}
                   onMouseLeave={handleTouchEnd}
                 >
-                  <img
+                  <ImageCard
                     src={img.imageUrl}
-                    alt="1"
                     onClick={() => setViewerIndex(index)}
-                    className="w-full aspect-square object-cover rounded-md transition duration-200 active:scale-105"
+                    className="relative w-full aspect-square overflow-hidden"
                   />
                   {activeId === img._id && (
                     <button
