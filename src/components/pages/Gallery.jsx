@@ -117,7 +117,7 @@ function Gallery() {
                   <ImageCard
                     src={img.imageUrl}
                     onClick={() => setViewerIndex(index)}
-                    className="relative w-full aspect-square overflow-hidden"
+                    //className="relative w-full aspect-square overflow-hidden"
                   />
                   {activeId === img._id && (
                     <button
