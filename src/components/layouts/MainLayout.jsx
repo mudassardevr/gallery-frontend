@@ -4,6 +4,7 @@ import Navbar from "../ui/Navbar";
 import BottomNav from "../ui/BottomNav";
 import { deleteImageAPI } from "../../Services/imageService";
 import DeleteModal from "../common/DeleteModal";
+import { toast } from "react-toastify";
 
 
 function MainLayout() {
@@ -13,20 +14,37 @@ function MainLayout() {
   const [selectedId, setSelectedId] = useState(null);
 
   const handleDeleteClick = (id) => {
-  setSelectedId(id);
-  setShowModal(true);
-};
+    setSelectedId(id);
+    setShowModal(true);
+  };
 
-const handleConfirmDelete = async () => {
-  try {
-    await deleteImageAPI(selectedId);
-    setRefresh(prev => !prev);
-  } finally {
-    setShowModal(false);
-    setSelectedId(null);
-    setActiveId(null);
-  }
-};
+  const handleConfirmDelete = async () => {
+      const toastId = toast.loading("Deleting...");
+    try {
+      await deleteImageAPI(selectedId);
+    
+      toast.update(toastId, {
+      render: "Image deleted successfully ",
+      type: "success",
+      isLoading: false,
+      autoClose: 2000,
+    });
+
+      setRefresh((prev) => !prev);
+    } catch(error){
+       toast.update(toastId, {
+      render: "Delete failed ",
+      type: "error",
+      isLoading: false,
+      autoClose: 2000,
+    });
+    }
+    finally {
+      setShowModal(false);
+      setSelectedId(null);
+      setActiveId(null);
+    }
+  };
   // const handleDeleteImage = async (id) => {
   //   await deleteImageAPI(id);
   //   setActiveId(null);
@@ -36,25 +54,25 @@ const handleConfirmDelete = async () => {
 
   return (
     <>
-     <DeleteModal
-  isOpen={showModal}
-  onClose={() => setShowModal(false)}
-  onConfirm={handleConfirmDelete}
-/>
-   
-    <div className="min-h-screen  bg-linear-to-r from-[#EEAECA] to-[#94BBE9] ">
-      <Navbar activeId={activeId} handleDeleteClick={handleDeleteClick} />
+      <DeleteModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onConfirm={handleConfirmDelete}
+      />
 
-      {/* Page component */}
-      <div className="pb-24">
-        <Outlet
-          context={{ activeId, setActiveId, handleDeleteClick, refresh }}
-        />
+      <div className="min-h-screen  bg-linear-to-r from-[#EEAECA] to-[#94BBE9] ">
+        <Navbar activeId={activeId} handleDeleteClick={handleDeleteClick} />
+
+        {/* Page component */}
+        <div className="pb-24">
+          <Outlet
+            context={{ activeId, setActiveId, handleDeleteClick, refresh }}
+          />
+        </div>
+
+        <BottomNav />
       </div>
-
-      <BottomNav />
-    </div>
-     </>
+    </>
   );
 }
 
