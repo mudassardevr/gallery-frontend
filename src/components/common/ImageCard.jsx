@@ -13,7 +13,9 @@ function ImageCard({ src, onClick }) {
 
         <img
           src={src}
+          loading="lazy"
           onClick={onClick}
+          decoding="async"
           onLoad={() => setLoading(false)}
           onError={(e) => (e.target.src = "/fallback.png")}
           className={`w-full h-full object-cover transition duration-500 ${ loading ? "opacity-0 scale-105 blur-sm" : "opacity-100 scale-100 blur-0"}`}
