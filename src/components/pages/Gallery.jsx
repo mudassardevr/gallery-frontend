@@ -10,6 +10,7 @@ import {
 import ImageCard from "../common/ImageCard";
 import { toast } from "react-toastify";
 import DeleteModal from "../common/DeleteModal";
+import cameraIcon from "../../assets/camera-Icon.svg";
 
 function Gallery() {
   // const location = useLocation();
@@ -20,12 +21,16 @@ function Gallery() {
   // const [deletingId, setDeletingId] = useState(null);
   // const [showModal, setShowModal] = useState(false);
   // const [selectedId, setSelectedId] = useState(null);
+  //FOR CAMERA
+  const [cameraOpen, setCameraOpen] = useState(false);
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
 
-  const { activeId, setActiveId, handleDeleteClick , refresh } =
+  const { activeId, setActiveId, handleDeleteClick, refresh } =
     useOutletContext(); // THIS IS FOR LONG PRESS DELETE
   let pressTimer = useRef(null);
 
-    // ✅ fetch images
+  // ✅ fetch images
   const fetchImages = async () => {
     try {
       const data = await fetchImagesAPI();
@@ -119,9 +124,46 @@ function Gallery() {
   //   }
   // };
 
+  /// START CAMERA
+  useEffect(() => {
+    if (cameraOpen) {
+      navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+        videoRef.current.srcObject = stream;
+      });
+    }
+  }, [cameraOpen]);
+
+  //CAPUTRE PHOTO
+  const capturePhoto = () => {
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(video, 0, 0);
+
+    const imageData = canvas.toDataURL("image/png");
+
+    console.log(imageData); // later upload this
+
+    closeCamera();
+  };
+
+  // CLOSE CAMERA
+  const closeCamera = () => {
+  setCameraOpen(false);
+
+  const stream = videoRef.current?.srcObject;
+  if (stream) {
+    stream.getTracks().forEach((track) => track.stop());
+  }
+};
+
   return (
     <>
-      <div onClick={() =>  setActiveId(null)}> 
+      <div onClick={() => setActiveId(null)}>
         {/* Cards */}
         <div className="p-2">
           {image.length === 0 ? (
@@ -194,6 +236,17 @@ function Gallery() {
           onChange={handleOnChange}
         />
 
+        {/* ✅ Floating Add Post Button (ONLY HERE) */}
+        <div className="fixed bottom-28 left-1/2 transform -translate-x-1/2 z-50">
+          <button
+            onClick={() => setCameraOpen(true)}
+            className="flex items-center bg-blue-500 gap-2 hover:bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg transition"
+          >
+            <img src={cameraIcon} className="w-5 h-5" />
+            <span>Add Photos</span>
+          </button>
+        </div>
+
         {/* pluse button */}
         <label
           htmlFor={!uploading ? "fileInput" : ""}
@@ -206,12 +259,38 @@ function Gallery() {
           )}
         </label>
       </div>
-    {/* // deleting modal
+      {/* // deleting modal
       <DeleteModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
         onConfirm={handleDelete}
       /> */}
+
+      {/* camera Code */}
+      {cameraOpen && (
+        <div className="fixed inset-0 bg-black z-50 flex flex-col items-center justify-center">
+          {/* Video Preview */}
+          <video ref={videoRef} autoPlay className="w-full max-w-sm rounded" />
+
+          {/* Buttons */}
+          <div className="mt-4 flex gap-4">
+            <button
+              onClick={capturePhoto}
+              className="bg-green-500 px-4 py-2 rounded"
+            >
+              Capture
+            </button>
+
+            <button
+              onClick={closeCamera}
+              className="bg-red-500 px-4 py-2 rounded"
+            >
+              Close
+            </button>
+          </div>
+          <canvas ref={canvasRef} className="hidden" />
+        </div>
+      )}
     </>
   );
 }
