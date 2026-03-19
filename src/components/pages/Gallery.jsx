@@ -126,11 +126,29 @@ function Gallery() {
 
   /// START CAMERA
   useEffect(() => {
-    if (cameraOpen) {
-      navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+    // if (cameraOpen) {
+    //   navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+    //     videoRef.current.srcObject = stream;
+    //   });
+    // }
+     if (!cameraOpen) return;
+
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    alert("Camera not supported on this device/browser");
+    return;
+  }
+
+  navigator.mediaDevices
+    .getUserMedia({ video: true })
+    .then((stream) => {
+      if (videoRef.current) {
         videoRef.current.srcObject = stream;
-      });
-    }
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      alert("Camera permission denied or error");
+    });
   }, [cameraOpen]);
 
   //CAPUTRE PHOTO
