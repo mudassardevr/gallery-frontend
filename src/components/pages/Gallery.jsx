@@ -10,7 +10,7 @@ import {
 import ImageCard from "../common/ImageCard";
 import { toast } from "react-toastify";
 import DeleteModal from "../common/DeleteModal";
-import cameraIcon from "../../assets/camera-Icon.svg";
+import cameraIcon from "../../assets/camera-icon.svg";
 
 function Gallery() {
   // const location = useLocation();
