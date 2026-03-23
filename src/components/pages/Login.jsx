@@ -1,18 +1,18 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import mLogo from "../../assets/M-logo.svg";
 import googleLogo from "../../assets/google.svg";
 import QRlogo from "../../assets/qr.svg";
-import { loginAPI } from "../../Services/authService";
+import { loginAPI, googleAPI } from "../../Services/authService";
 import { AuthContext } from "../../context/AuthContext";
 import { LoadingContext } from "../../context/LoadingContext";
 import { toast } from "react-toastify";
-import { Eye , EyeOff} from "lucide-react"
+import { Eye, EyeOff } from "lucide-react";
 
 function Login() {
   const { setIsLoggedIn } = useContext(AuthContext); ///useContext
   const { loading, setLoading } = useContext(LoadingContext);
-  const [ showPassword , setShowPassword ] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -35,7 +35,7 @@ function Login() {
       if (data.success) {
         localStorage.setItem("token", data.token);
         setIsLoggedIn(true);
-        toast.success("Login Successful");//toast
+        toast.success("Login Successful"); //toast
         navigate("/");
       } else {
         toast.error(data.error);
@@ -52,10 +52,41 @@ function Login() {
     e.preventDefault();
   };
 
-  const handleGoogleLogin = () => {
-  window.location.href =
-    "https://gallery-backend-sgma.onrender.com/api/auth/google";
-};
+  //   const handleGoogleLogin = () => {
+  //   window.location.href =
+  //     "https://gallery-backend-sgma.onrender.com/api/auth/google";
+  // };
+
+  useEffect(() => {
+    /* global google */
+    google.accounts.id.initialize({
+      client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+      callback: handleGoogleResponse,
+    });
+
+    google.accounts.id.renderButton(document.getElementById("googleBtn"), {
+      theme: "outline",
+      size: "large",
+    });
+  }, []);
+
+  const handleGoogleResponse = async (response) => {
+    try {
+      const data = await googleAPI(response.credential);
+
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        setIsLoggedIn(true);
+        toast.success("Google Login Successful");
+        navigate("/");
+      } else {
+        toast.error(data.error || "Google login failed");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Server Error");
+    }
+  };
 
   return (
     <>
@@ -118,11 +149,12 @@ function Login() {
                     onChange={handleOnChange}
                     className="w-full border border-gray-500 text-xl rounded-2xl p-3 mt-1 focus:outline-blue-700"
                   />
-                  <span 
-                  onClick={()=> setShowPassword(!showPassword)}
-                  className="absolute right-3 top-5 text-gray-500">
+                  <span
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-5 text-gray-500"
+                  >
                     {/* <img src={eyeIcon} className="w-5 h-5" /> */}
-                    {showPassword ? <EyeOff size={20}/> : <Eye size={20}/>}
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </span>
                 </div>
               </div>
@@ -137,7 +169,7 @@ function Login() {
               <button
                 type="button"
                 onClick={handleLogin}
-                 disabled={loading}
+                disabled={loading}
                 className="w-full bg-[#e60023] p-2 rounded-xl text-white hover:bg-[#b60101] duration-400"
               >
                 {loading ? "logging in.." : "Log in"}
@@ -147,7 +179,10 @@ function Login() {
 
               {/* Social-buttons */}
 
-              <button onClick={handleGoogleLogin} className="w-full border border-gray-300 p-2 rounded-sm flex items-center justify-center gap-4  hover:bg-gray-200 duration-400">
+              <button
+                id="googleBtn"
+                className="w-full border border-gray-300 p-2 rounded-sm flex items-center justify-center gap-4  hover:bg-gray-200 duration-400"
+              >
                 <img
                   src={googleLogo}
                   alt="google-logo"
