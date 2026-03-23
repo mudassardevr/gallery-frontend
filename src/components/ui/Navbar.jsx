@@ -5,8 +5,11 @@ import mLogo from "../../assets/M-logo.svg"
 function Navbar({ activeId, handleDeleteClick }) {
   return (
     <div className="p-4 sticky top-0 bg-white/30 backdrop-blur-md shadow-xl flex justify-between items-center z-50">
+      <div className="flex items-center gap-2">
+
       <img src={mLogo} alt="m-logo" className="w-5 h-5"/>
       <span className="flex items-center font-bold ">Gallery</span>
+      </div>
       {activeId && (
         <button
           title="Delete selected image"
