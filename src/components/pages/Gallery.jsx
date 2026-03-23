@@ -2,14 +2,9 @@ import React, { useEffect, useState, useRef } from "react";
 import plusIcon from "../../assets/plus.svg";
 import photoIcon from "../../assets/photo-icon.svg";
 import { useOutletContext } from "react-router-dom";
-import {
-  uploadImageAPI,
-  fetchImagesAPI,
-  deleteImageAPI,
-} from "../../Services/imageService";
+import { uploadImageAPI, fetchImagesAPI } from "../../Services/imageService";
 import ImageCard from "../common/ImageCard";
 import { toast } from "react-toastify";
-import DeleteModal from "../common/DeleteModal";
 import cameraIcon from "../../assets/camera-icon.svg";
 
 function Gallery() {
@@ -18,9 +13,8 @@ function Gallery() {
   const [file, setFile] = useState(null);
   const [viewerIndex, setViewerIndex] = useState(null); // touch image on fullscreen
   const [uploading, setUploading] = useState(false); // plus button loading when image adding
-  // const [deletingId, setDeletingId] = useState(null);
-  // const [showModal, setShowModal] = useState(false);
-  // const [selectedId, setSelectedId] = useState(null);
+  const [capturedImage, setCapturedImage] = useState(null);
+
   //FOR CAMERA
   const [cameraOpen, setCameraOpen] = useState(false);
   const videoRef = useRef(null);
@@ -30,7 +24,7 @@ function Gallery() {
     useOutletContext(); // THIS IS FOR LONG PRESS DELETE
   let pressTimer = useRef(null);
 
-  // ✅ fetch images
+  // fetch images
   const fetchImages = async () => {
     try {
       const data = await fetchImagesAPI();
@@ -49,7 +43,7 @@ function Gallery() {
     fetchImages();
   };
 
-  // ✅ upload image
+  // upload image
   const handleOnChange = async (e) => {
     const selectedFile = e.target.files[0];
     if (!selectedFile) return;
@@ -108,22 +102,6 @@ function Gallery() {
     // }
   };
 
-  // const handleDelete = async () => {
-  //   try {
-  //     setDeletingId(selectedId);
-
-  //     await deleteImageAPI(selectedId);
-  //     await fetchImages();
-  //     toast.success("Image deleted");
-  //   } catch (error) {
-  //     toast.error("Delete failed");
-  //   } finally {
-  //     setDeletingId(null);
-  //     setShowModal(false);
-  //     setActiveId(null); // hide delete button after action
-  //   }
-  // };
-
   /// START CAMERA
   useEffect(() => {
     // if (cameraOpen) {
@@ -131,24 +109,24 @@ function Gallery() {
     //     videoRef.current.srcObject = stream;
     //   });
     // }
-     if (!cameraOpen) return;
+    if (!cameraOpen) return;
 
-  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    alert("Camera not supported on this device/browser");
-    return;
-  }
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      alert("Camera not supported on this device/browser");
+      return;
+    }
 
-  navigator.mediaDevices
-    .getUserMedia({ video: true })
-    .then((stream) => {
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      alert("Camera permission denied or error");
-    });
+    navigator.mediaDevices
+      .getUserMedia({ video: true })
+      .then((stream) => {
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("Camera permission denied or error");
+      });
   }, [cameraOpen]);
 
   //CAPUTRE PHOTO
@@ -164,20 +142,43 @@ function Gallery() {
 
     const imageData = canvas.toDataURL("image/png");
 
-    console.log(imageData); // later upload this
+    // console.log(imageData);
+    setCapturedImage(imageData); // store image
 
     closeCamera();
   };
 
   // CLOSE CAMERA
   const closeCamera = () => {
-  setCameraOpen(false);
+    setCameraOpen(false);
 
-  const stream = videoRef.current?.srcObject;
-  if (stream) {
-    stream.getTracks().forEach((track) => track.stop());
-  }
-};
+    const stream = videoRef.current?.srcObject;
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
+    }
+  };
+
+  const uploadCapturedImage = async () => {
+    try {
+      setUploading(true);
+
+      // convert base64 -> file
+      const file = await fetch(capturedImage).then((res) => res.blob());
+
+      // use your service
+      await uploadImageAPI(file);
+
+      await fetchImages();
+
+      toast.success("Image uploaded");
+      setCapturedImage(null);
+    } catch (error) {
+      console.error(error);
+      toast.error("Upload failed");
+    } finally {
+      setUploading(false);
+    }
+  };
 
   return (
     <>
@@ -254,7 +255,7 @@ function Gallery() {
           onChange={handleOnChange}
         />
 
-        {/* ✅ Floating Add Post Button (ONLY HERE) */}
+        {/*  Floating Add Post Button (ONLY HERE) */}
         <div className="fixed bottom-28 left-1/2 transform -translate-x-1/2 z-50">
           <button
             onClick={() => setCameraOpen(true)}
@@ -284,7 +285,7 @@ function Gallery() {
         onConfirm={handleDelete}
       /> */}
 
-      {/* camera Code */}
+      {/* camera open and capture image */}
       {cameraOpen && (
         <div className="fixed inset-0 bg-black z-50 flex flex-col items-center justify-center">
           {/* Video Preview */}
@@ -307,6 +308,33 @@ function Gallery() {
             </button>
           </div>
           <canvas ref={canvasRef} className="hidden" />
+        </div>
+      )}
+
+      {/* upload captured image */}
+
+      {capturedImage && (
+        <div className="fixed inset-0 bg-black/90 flex flex-col items-center justify-center z-50">
+          <img
+            src={capturedImage}
+            className="max-w-[90%] max-h-[70%] rounded"
+          />
+
+          <div className="flex gap-4 mt-4">
+            <button
+              onClick={uploadCapturedImage}
+              className="bg-blue-500 px-4 py-2 rounded text-white"
+            >
+              Upload
+            </button>
+
+            <button
+              onClick={() => setCapturedImage(null)}
+              className="bg-gray-500 px-4 py-2 rounded text-white"
+            >
+              Retake
+            </button>
+          </div>
         </div>
       )}
     </>

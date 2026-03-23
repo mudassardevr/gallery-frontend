@@ -1,8 +1,6 @@
 import React, { useContext, useState,} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import mLogo from "../../assets/M-logo.svg";
-import googleLogo from "../../assets/google.svg";
-import QRlogo from "../../assets/qr.svg";
 import { loginAPI,} from "../../Services/authService";
 import { AuthContext } from "../../context/AuthContext";
 import { LoadingContext } from "../../context/LoadingContext";

@@ -24,7 +24,7 @@ export const fetchImagesAPI = async () => {
 //     setImages(data);
 //   } else {
 //     console.log("Auth Error:", data);
-//     setImages([]);  // prevents crash 😈🔥
+//     setImages([]);  // prevents crash
 //   }
   
   const response = await fetch(`${API_URL}/my-images`, {
