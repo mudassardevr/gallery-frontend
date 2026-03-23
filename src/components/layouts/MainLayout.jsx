@@ -60,7 +60,7 @@ function MainLayout() {
         onConfirm={handleConfirmDelete}
       />
 
-      <div className="min-h-screen  bg-linear-to-r from-[#EEAECA] to-[#94BBE9] ">
+      <div className="min-h-screen bg-gray-50">
         <Navbar activeId={activeId} handleDeleteClick={handleDeleteClick} />
 
         {/* Page component */}
