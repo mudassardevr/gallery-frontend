@@ -234,7 +234,7 @@ function Gallery() {
             </div>
           )}
         </div>
-        {viewerImage && (
+        {/* {viewerImage && (
           <div
             onClick={() => setViewerIndex(null)}
             className="fixed inset-0 bg-black/90 flex items-center justify-center z-50"
@@ -247,6 +247,45 @@ function Gallery() {
               onClick={(e) => e.stopPropagation()}
               className="max-w-[90%] max-h-[90%] object-contain"
             />
+          </div>
+        )} */}
+        {viewerIndex !== null && ( // changed condition
+          <div
+            className="fixed inset-0 bg-black/90 flex items-center justify-center overflow-hidden z-50"
+            onClick={() => setViewerIndex(null)}
+            onTouchStart={handleTouchStartViewer}
+            onTouchEnd={handleTouchEndViewer}
+          >
+            {/* CLOSE BUTTON */}
+            <button
+              onClick={() => setViewerIndex(null)}
+              className="absolute top-4 right-4 text-white text-2xl z-50"
+            >
+              ✕
+            </button>
+
+            {/*  SLIDER CONTAINER */}
+            <div
+              className="flex transition-transform duration-300 ease-in-out" // smooth animation
+              style={{
+                transform: `translateX(-${viewerIndex * 100}%)`, //  slide logic
+                width: `${image.length * 100}%`, //  full width for all images
+              }}
+            >
+              {image.map((img, i) => (
+                <div
+                  key={i}
+                  className="w-full flex justify-center items-center shrink-0" //  fixed width
+                >
+                  <img
+                    src={img.imageUrl}
+                    alt="gallery"
+                    onClick={(e) => e.stopPropagation()}
+                    className="max-w-[90%] max-h-[90%] object-contain"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
