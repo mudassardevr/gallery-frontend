@@ -76,25 +76,4 @@ export const resetPasswordAPI = async (email, newPassword) => {
 };
 
 
-// SIGN WITH GOOGLE ;
-export const googleAPI = async(token) => {
 
-  try {
-    const response = await fetch(`${API_URL}/google`, {
-      method : "POST", 
-      headers : {
-        "Content-type" : "application/json",
-      },
-      body: JSON.stringify( { token })
-    });
-
-    return response.json()
-    
-  } catch (error) {
-    
-    console.error("Google API Error:", error);
-    return { success: false, error: "Google login failed" };
-  }
-
-
-}

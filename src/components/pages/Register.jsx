@@ -98,10 +98,6 @@ function Register() {
                 >
                   Continue with email
                 </button>
-                <button className="bg-white border border-gray-300 w-full p-3 text-white text-xl rounded-2xl flex justify-center items-center gap-4 hover:bg-gray-200 duration-400">
-                  <img src={googleLogo} alt="google" className="w-5 h-5" />
-                  <span className="text-black">Continue with Google</span>
-                </button>
               </div>
             )}
 
@@ -153,9 +149,9 @@ function Register() {
                   />
                 </div>
 
-                <p className="text-sm text-center my-4">
+                {/* <p className="text-sm text-center my-4">
                   Use 8 or more letters, numbers and symbols
-                </p>
+                </p> */}
 
                 <button
                   type="button"
@@ -171,7 +167,7 @@ function Register() {
             {/* footer */}
             <div className="mt-6 w-full text-center">
               <p className="text-[11px] text-gray-500 leading-4 px-6">
-                By continuing, you agree to Imagebash's{" "}
+                By continuing, you agree to Gallery App{" "}
                 <span className="font-semibold text-black hover:underline cursor-pointer">
                   Terms of Service
                 </span>{" "}

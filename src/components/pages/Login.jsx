@@ -1,9 +1,9 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState,} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import mLogo from "../../assets/M-logo.svg";
 import googleLogo from "../../assets/google.svg";
 import QRlogo from "../../assets/qr.svg";
-import { loginAPI, googleAPI } from "../../Services/authService";
+import { loginAPI,} from "../../Services/authService";
 import { AuthContext } from "../../context/AuthContext";
 import { LoadingContext } from "../../context/LoadingContext";
 import { toast } from "react-toastify";
@@ -52,41 +52,6 @@ function Login() {
     e.preventDefault();
   };
 
-  //   const handleGoogleLogin = () => {
-  //   window.location.href =
-  //     "https://gallery-backend-sgma.onrender.com/api/auth/google";
-  // };
-
-  useEffect(() => {
-    /* global google */
-    google.accounts.id.initialize({
-      client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-      callback: handleGoogleResponse,
-    });
-
-    google.accounts.id.renderButton(document.getElementById("googleBtn"), {
-      theme: "outline",
-      size: "large",
-    });
-  }, []);
-
-  const handleGoogleResponse = async (response) => {
-    try {
-      const data = await googleAPI(response.credential);
-
-      if (data.token) {
-        localStorage.setItem("token", data.token);
-        setIsLoggedIn(true);
-        toast.success("Google Login Successful");
-        navigate("/");
-      } else {
-        toast.error(data.error || "Google login failed");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Server Error");
-    }
-  };
 
   return (
     <>
@@ -175,11 +140,11 @@ function Login() {
                 {loading ? "logging in.." : "Log in"}
               </button>
 
-              <div className="text-center font-bold">OR</div>
+              {/* <div className="text-center font-bold">OR</div> */}
 
               {/* Social-buttons */}
 
-              <button
+              {/* <div
                 id="googleBtn"
                 className="w-full border border-gray-300 p-2 rounded-sm flex items-center justify-center gap-4  hover:bg-gray-200 duration-400"
               >
@@ -189,11 +154,11 @@ function Login() {
                   className="w-5 h-5 flex items-center"
                 />
                 <span>Continue with Google</span>
-              </button>
+              </div>
               <button className="w-full border border-gray-300 p-2 rounded-sm flex items-center justify-center gap-4  hover:bg-gray-200 duration-400">
                 <img src={QRlogo} alt="google-logo" className="w-5 h-5" />
                 <span>Use QR Code</span>
-              </button>
+              </button> */}
             </form>
 
             <p className="text-[11px] text-gray-400 text-center mt-5 px-8 leading-5">
