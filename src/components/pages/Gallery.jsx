@@ -286,6 +286,27 @@ function Gallery() {
                 </div>
               ))}
             </div>
+            {/* left button for pc */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation(); // prevent close
+                if (viewerIndex > 0) setViewerIndex(viewerIndex - 1);
+              }}
+              className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 text-white text-2xl px-3 py-2 rounded-full"
+            >
+              ‹
+            </button>
+            {/* right button for pc */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation(); //prevent close
+                if (viewerIndex < image.length - 1)
+                  setViewerIndex(viewerIndex + 1);
+              }}
+              className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 text-white text-2xl px-3 py-2 rounded-full"
+            >
+              ›
+            </button>
           </div>
         )}
 
