@@ -138,6 +138,10 @@ function Gallery() {
     canvas.height = video.videoHeight;
 
     const ctx = canvas.getContext("2d");
+
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1);
+
     ctx.drawImage(video, 0, 0);
 
     const imageData = canvas.toDataURL("image/png");
@@ -289,7 +293,11 @@ function Gallery() {
       {cameraOpen && (
         <div className="fixed inset-0 bg-black z-50 flex flex-col items-center justify-center">
           {/* Video Preview */}
-          <video ref={videoRef} autoPlay className="w-full max-w-sm rounded" />
+          <video
+            ref={videoRef}
+            autoPlay
+            className="w-full max-w-sm rounded scale-x-[-1] "
+          />
 
           {/* Buttons */}
           <div className="mt-4 flex gap-4">
@@ -323,9 +331,14 @@ function Gallery() {
           <div className="flex gap-4 mt-4">
             <button
               onClick={uploadCapturedImage}
+              disabled={uploading}
               className="bg-blue-500 px-4 py-2 rounded text-white"
             >
-              Upload
+              {uploading ? (
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              ) : (
+                "Upload"
+              )}
             </button>
 
             <button
