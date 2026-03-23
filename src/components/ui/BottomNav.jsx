@@ -16,7 +16,7 @@ function BottomNav() {
                 <Link
                   // onClick={() => setActiveTab("photos")}
                   to="/"
-                  className={`w-16 flex flex-col items-center text-sm rounded-full px-3 py-1 transition duration-300  active:scale-90 ${location.pathname === "/" ? "bg-blue-500 backdrop-blur-md" : ""}`}
+                  className={`w-16 flex flex-col items-center text-sm rounded-full px-3 py-1 transition duration-300  active:scale-90 ${location.pathname === "/" ? "bg-blue-400 backdrop-blur-md" : ""}`}
                 >
                   <img src={photoIcon} className="w-5 h-5" />
                   <span>Photos</span>
@@ -24,7 +24,7 @@ function BottomNav() {
                 <Link
                   // onClick={() => setActiveTab("camera")}
                   to="/about"
-                  className={`w-16 flex flex-col items-center text-sm rounded-full px-3 py-1 transition duration-300  active:scale-90 ${location.pathname === "/about" ? "bg-blue-500 backdrop-blur-md" : ""}`}
+                  className={`w-16 flex flex-col items-center text-sm rounded-full px-3 py-1 transition duration-300  active:scale-90 ${location.pathname === "/about" ? "bg-blue-400 backdrop-blur-md" : ""}`}
                 >
                   <img src={detailsIcon} className="w-5 h-5" />
                   <span>About</span>
@@ -32,7 +32,7 @@ function BottomNav() {
                 <Link
                   // onClick={() => setActiveTab("settings")}
                   to="/settings"
-                  className={`w-16 flex flex-col items-center text-sm rounded-full px-3 py-1 transition duration-300  active:scale-90 ${location.pathname === "/settings" ? "bg-blue-500 backdrop-blur-md" : ""}`}
+                  className={`w-16 flex flex-col items-center text-sm rounded-full px-3 py-1 transition duration-300  active:scale-90 ${location.pathname === "/settings" ? "bg-blue-400 backdrop-blur-md" : ""}`}
                 >
                   <img src={settingsIcon} className="w-5 h-5" />
                   <span>Settings </span>
@@ -40,7 +40,7 @@ function BottomNav() {
                 <Link
                   // onClick={() => setActiveTab("profile")}
                   to="/profile"
-                  className={`w-16 flex flex-col items-center text-sm rounded-full px-3 py-1 transition duration-300   active:scale-90 ${location.pathname === "/profile" ? "bg-blue-500 backdrop-blur-md" : ""}`}
+                  className={`w-16 flex flex-col items-center text-sm rounded-full px-3 py-1 transition duration-300   active:scale-90 ${location.pathname === "/profile" ? "bg-blue-400 backdrop-blur-md" : ""}`}
                 >
                   <img src={profileIcon} className="w-5 h-5" />
                   <span>profile</span>
