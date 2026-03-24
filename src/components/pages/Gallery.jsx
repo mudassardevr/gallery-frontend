@@ -181,7 +181,7 @@ function Gallery() {
 
   return (
     <>
-      <div onClick={() => setActiveId(null)}>
+      <div onClick={() => setActiveId(null)} className="pb-32">
         {/* Cards */}
         <div className="p-2">
           {loading ? (
