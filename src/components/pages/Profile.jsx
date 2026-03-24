@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getUserProfile, updateProfile } from "../../Services/authService";
+import { fetchImagesAPI } from "../../Services/imageService";
 import { toast } from "react-toastify";
 
 function Profile() {
@@ -7,11 +8,25 @@ function Profile() {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const [file, setFile] = useState(null); // for upload
+  const [images, setImages] = useState([]);
+ 
 
   // Fetch user
   useEffect(() => {
     fetchUser();
+    fetchImages();
   }, []);
+
+  const fetchImages = async () => {
+  const data = await fetchImagesAPI();
+
+  if (Array.isArray(data)) {
+    setImages(data);
+  } else {
+    console.log("Error:", data);
+    setImages([]);
+  }
+};
 
   const fetchUser = async () => {
     const data = await getUserProfile();
@@ -87,7 +102,7 @@ function Profile() {
             {/* Stats (static for now) */}
             <div className="flex justify-center md:justify-start gap-6 mt-4">
               <div>
-                <h3 className="font-semibold text-lg">{image.length}</h3>
+                <h3 className="font-semibold text-lg">{images.length}</h3>
                 <p className="text-sm text-gray-500">Photos</p>
               </div>
               <div>
