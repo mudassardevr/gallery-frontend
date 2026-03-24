@@ -14,6 +14,7 @@ function Gallery() {
   const [viewerIndex, setViewerIndex] = useState(null); // touch image on fullscreen
   const [uploading, setUploading] = useState(false); // plus button loading when image adding
   const [capturedImage, setCapturedImage] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   //FOR CAMERA
   const [cameraOpen, setCameraOpen] = useState(false);
@@ -27,10 +28,19 @@ function Gallery() {
   // fetch images
   const fetchImages = async () => {
     try {
+      setLoading(true);
+
       const data = await fetchImagesAPI();
-      setImage(data);
+
+      if (Array.isArray(data)) {
+        setImage(data);
+      } else {
+        toast.error("Invalid data");
+      }
     } catch (error) {
       toast.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -51,7 +61,7 @@ function Gallery() {
     setUploading(true);
     try {
       await uploadImageAPI(selectedFile);
-      await fetchImages();
+      fetchImages();
     } catch (error) {
       toast.error("Adding Failed");
     } finally {
@@ -91,24 +101,10 @@ function Gallery() {
     if (diff < -50 && viewerIndex > 0) {
       setViewerIndex(viewerIndex - 1); // swipe right → previous
     }
-
-    //infinite swipe
-    // if (diff > 50) {
-    //   setViewerIndex((prev) => (prev + 1) % image.length);
-    // }
-
-    // if (diff < -50) {
-    //   setViewerIndex((prev) => (prev - 1 + image.length) % image.length);
-    // }
   };
 
   /// START CAMERA
   useEffect(() => {
-    // if (cameraOpen) {
-    //   navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
-    //     videoRef.current.srcObject = stream;
-    //   });
-    // }
     if (!cameraOpen) return;
 
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -146,7 +142,6 @@ function Gallery() {
 
     const imageData = canvas.toDataURL("image/png");
 
-    // console.log(imageData);
     setCapturedImage(imageData); // store image
 
     closeCamera();
@@ -189,7 +184,11 @@ function Gallery() {
       <div onClick={() => setActiveId(null)}>
         {/* Cards */}
         <div className="p-2">
-          {image.length === 0 ? (
+          {loading ? (
+            <div className="flex justify-center items-center h-[60vh]">
+              <p>Loading...</p>
+            </div>
+          ) : image.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-[60vh] text-gray-400">
               <img src={photoIcon} className="w-12 h-12 opacity-50 mb-3" />
               <p className="text-lg font-semibold">Your gallery is empty</p>
@@ -234,21 +233,6 @@ function Gallery() {
             </div>
           )}
         </div>
-        {/* {viewerImage && (
-          <div
-            onClick={() => setViewerIndex(null)}
-            className="fixed inset-0 bg-black/90 flex items-center justify-center z-50"
-            onTouchStart={handleTouchStartViewer}
-            onTouchEnd={handleTouchEndViewer}
-          >
-            <img
-              src={viewerImage}
-              alt="1"
-              onClick={(e) => e.stopPropagation()}
-              className="max-w-[90%] max-h-[90%] object-contain"
-            />
-          </div>
-        )} */}
         {viewerIndex !== null && ( // changed condition
           <div
             className="fixed inset-0 bg-black/90 flex items-center justify-center overflow-hidden z-50"
@@ -342,12 +326,6 @@ function Gallery() {
           )}
         </label>
       </div>
-      {/* // deleting modal
-      <DeleteModal
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
-        onConfirm={handleDelete}
-      /> */}
 
       {/* camera open and capture image */}
       {cameraOpen && (
