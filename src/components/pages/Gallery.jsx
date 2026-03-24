@@ -210,14 +210,12 @@ function Gallery() {
                   <ImageCard
                     src={img.imageUrl}
                     onClick={() => setViewerIndex(index)}
-                   
                   />
                   {activeId === img._id && (
                     <button
                       onClick={() => handleDeleteClick(img._id)}
                       className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded transition-all duration-300 ease-in-out"
                     >
-      
                       Delete
                     </button>
                   )}
@@ -252,13 +250,13 @@ function Gallery() {
               {image.map((img, i) => (
                 <div
                   key={i}
-                  className="w-full flex justify-center items-center shrink-0" //  fixed width
+                  className="w-full h-screen flex justify-center items-center shrink-0" //  fixed width
                 >
                   <img
                     src={img.imageUrl}
                     alt="gallery"
                     onClick={(e) => e.stopPropagation()}
-                    className="max-w-[90%] max-h-[90%] object-contain"
+                    className="w-full h-full object-contain"
                   />
                 </div>
               ))}
@@ -295,37 +293,35 @@ function Gallery() {
           id="fileInput"
           onChange={handleOnChange}
         />
-       
-          {viewerIndex === null && (
-            <>
-            
-        {/*  Floating Add Post Button (ONLY HERE) */}
-        <div className="fixed bottom-28 left-1/2 transform -translate-x-1/2 z-50">
-          <button
-            onClick={() => setCameraOpen(true)}
-            className="flex items-center bg-blue-500 gap-2 hover:bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg transition"
-          >
-            <img src={cameraIcon} className="w-5 h-5" />
-            <span>Add Photos</span>
-          </button>
-        </div>
 
-        {/* pluse button */}
-        <label
-          htmlFor={!uploading ? "fileInput" : ""}
-          className="bg-[#e60023] text-3xl text-white flex justify-center items-center w-10 h-10 rounded-full fixed bottom-24 right-6 shadow-2xl active:scale-95"
-        >
-          {uploading ? (
-            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-          ) : (
-            <img src={plusIcon} className="w-4 h-4" />
-          )}
-        </label>
-        </>
-          )}
+        {viewerIndex === null && (
+          <>
+            {/*  Floating Add Post Button (ONLY HERE) */}
+            <div className="fixed bottom-28 left-1/2 transform -translate-x-1/2 z-50">
+              <button
+                onClick={() => setCameraOpen(true)}
+                className="flex items-center bg-blue-500 gap-2 hover:bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg transition"
+              >
+                <img src={cameraIcon} className="w-5 h-5" />
+                <span>Add Photos</span>
+              </button>
+            </div>
+
+            {/* pluse button */}
+            <label
+              htmlFor={!uploading ? "fileInput" : ""}
+              className="bg-[#e60023] text-3xl text-white flex justify-center items-center w-10 h-10 rounded-full fixed bottom-24 right-6 shadow-2xl active:scale-95"
+            >
+              {uploading ? (
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              ) : (
+                <img src={plusIcon} className="w-4 h-4" />
+              )}
+            </label>
+          </>
+        )}
       </div>
-     
-    
+
       {/* camera open and capture image */}
       {cameraOpen && (
         <div className="fixed inset-0 bg-black z-50 flex flex-col items-center justify-center">
