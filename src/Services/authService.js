@@ -75,5 +75,30 @@ export const resetPasswordAPI = async (email, newPassword) => {
   return response.json();
 };
 
+// GET USER PROFILE 
+export const getUserProfile = async () => {
+  const res = await fetch(`${API_URL}/getuser`, {
+    method: "GET",
+    headers: {
+      "auth-token": localStorage.getItem("token"),
+    },
+  });
+
+  return res.json();
+};
+
+//UPDATE PROFILE
+export const updateProfile = async (formData) => {
+  const res = await fetch(`${API_URL}/updateprofile`, {
+    method: "PUT",
+    headers: {
+      "auth-token": localStorage.getItem("token"),
+    },
+    body: formData, 
+  });
+
+  return res.json();
+};
+
 
 
