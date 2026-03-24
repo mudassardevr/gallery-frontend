@@ -295,7 +295,10 @@ function Gallery() {
           id="fileInput"
           onChange={handleOnChange}
         />
-
+       
+          {viewerIndex === null && (
+            <>
+            
         {/*  Floating Add Post Button (ONLY HERE) */}
         <div className="fixed bottom-28 left-1/2 transform -translate-x-1/2 z-50">
           <button
@@ -318,8 +321,11 @@ function Gallery() {
             <img src={plusIcon} className="w-4 h-4" />
           )}
         </label>
+        </>
+          )}
       </div>
-
+     
+    
       {/* camera open and capture image */}
       {cameraOpen && (
         <div className="fixed inset-0 bg-black z-50 flex flex-col items-center justify-center">
