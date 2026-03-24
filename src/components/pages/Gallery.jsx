@@ -185,9 +185,9 @@ function Gallery() {
         {/* Cards */}
         <div className="p-2">
           {loading ? (
-            <div className="flex justify-center items-center h-[60vh]">
+            <div className="flex justify-center items-center h-[60vh] flex-col">
               <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-  <p className="text-gray-500 text-sm">Loading images...</p>
+              <p className="text-gray-500 text-sm">Loading images...</p>
             </div>
           ) : image.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-[60vh] text-gray-400">
@@ -201,9 +201,6 @@ function Gallery() {
                 <div
                   key={img._id}
                   className="relative group transition-all duration-300"
-                  // className={`relative group transition duration-300 ${
-                  //   deletingId === img._id ? "opacity-0 scale-95" : ""
-                  // }`}
                   onTouchStart={() => handleTouchStart(img._id)}
                   onTouchEnd={handleTouchEnd}
                   onMouseDown={() => handleTouchStart(img._id)}
@@ -213,19 +210,14 @@ function Gallery() {
                   <ImageCard
                     src={img.imageUrl}
                     onClick={() => setViewerIndex(index)}
-                    //className="relative w-full aspect-square overflow-hidden"
+                   
                   />
                   {activeId === img._id && (
                     <button
                       onClick={() => handleDeleteClick(img._id)}
-                      // disabled={deletingId === img._id}
                       className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded transition-all duration-300 ease-in-out"
                     >
-                      {/* {deletingId === img._id ? (
-                        <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      ) : (
-                        "Delete"
-                      )} */}
+      
                       Delete
                     </button>
                   )}
