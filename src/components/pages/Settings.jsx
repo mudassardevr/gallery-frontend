@@ -14,7 +14,7 @@ function Settings() {
     window.location.href = "/login";
   };
   return (
-    <div className="p-4 max-w-md mx-auto text-white">
+    <div className="p-4 max-w-md mx-auto text-black">
       <h2 className="text-2xl font-bold mb-4">Settings</h2>
 
       {/* Name */}
