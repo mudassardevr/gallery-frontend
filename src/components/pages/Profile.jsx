@@ -15,9 +15,10 @@ function Profile() {
 
   const fetchUser = async () => {
     const data = await getUserProfile();
+      console.log("USER DATA:", data); // debug once
     setUser(data);
     setName(data.name);
-    setImage(data.profileImage);
+    setImage(data.profileImage || ""); // FIX
   };
 
   // Handle Image (preview + store file)
