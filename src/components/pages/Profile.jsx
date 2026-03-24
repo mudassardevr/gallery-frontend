@@ -9,6 +9,7 @@ function Profile() {
   const [image, setImage] = useState("");
   const [file, setFile] = useState(null); // for upload
   const [images, setImages] = useState([]);
+  const [loading , setLoading] = useState(false);
  
 
   // Fetch user
@@ -49,6 +50,7 @@ function Profile() {
   // Update Profile
   const handleUpdate = async () => {
     try {
+       setLoading(true); // START loading
       const formData = new FormData();
 
       formData.append("name", name);
@@ -64,6 +66,8 @@ function Profile() {
       toast.success("Profile Updated");
     } catch (error) {
       toast.error("Update Failed");
+    } finally{
+      setLoading(false); //STOP loading
     }
   };
 
@@ -127,7 +131,12 @@ function Profile() {
         <div className="flex flex-col md:flex-row gap-4 justify-between">
           <button
             onClick={handleUpdate}
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+            disabled={loading}
+            className={`px-4 py-2 rounded-lg text-white ${
+    loading
+      ? "bg-blue-300 cursor-not-allowed"
+      : "bg-blue-500 hover:bg-blue-600"
+  }`}
           >
             Save Changes
           </button>
